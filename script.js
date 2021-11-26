@@ -1,22 +1,50 @@
-/*
-1) Создать пустой репозиторий на GitHub без файла README.md
-2) Создать HTML страницу и подключить к ней файл скрипта
-3) В репозитории создать отдельную ветку dev на GitHub и поместить туда index.html и script.js
-4) Выполнить push
-5) В файле скрипта создать переменные:
- title,
- screens,
- screenPrice,
- rollback,
- fullPrice,
- adaptive
-6) Вывести на экран в модальном окне (alert) сообщение с любым текстом
-7) Вывести в консоль сообщение с любым текстом
-8) Проверить, чтобы все работало и не было ошибок в консоли
-9) В репозитории создать новую ветку lesson01, выполнить commit в новую ветку и push 
-*/
+const title = "My project";
+const screens = "Simple, Complex, Interactive";
+const screenPrice = 468;
+const rollback = 49;
+const fullPrice = 100000;
+const adaptive = true;
 
-const title = '', screens = '', screenPrice = '', rollback = '', fullPrice = '', adaptive = '';
+const runTask = ({description, fn}) => {
+    console.log('//' + description);
+    fn();
+    console.log('');
+}
 
-alert('Hello world!');
-console.log('Hello world!');
+const tasks = [
+    {
+        description: 'Вывести в консоль тип данных значений переменных title, fullPrice, adaptive',
+        fn: () => {
+            console.log(typeof title);
+            console.log(typeof fullPrice);
+            console.log(typeof adaptive);
+        }
+    },
+    {
+        description: 'Вывести в консоль длину строки screens',
+        fn: () => {
+            console.log(screens.length)
+        }
+    },
+    {
+        description: 'Вывести в консоль “Стоимость верстки экранов...',
+        fn: () => {
+            console.log(`“Стоимость верстки экранов ${screenPrice} рублей/ долларов/гривен/юани” 
+            и “Стоимость разработки сайта ${fullPrice} рублей/ долларов/гривен/юани”`);
+        }
+    },
+    {
+        description: 'Привести строку screens к нижнему регистру и разбить строку на массив, вывести массив в консоль...',
+        fn: () => {
+            console.log(screens.toLowerCase().split(', '))
+        }
+    },
+    {
+        description: 'Вывести в консоль Процент отката посреднику за работу (fullPrice * (rollback/100))',
+        fn: () => {
+            console.log(fullPrice * (rollback/100))
+        }
+    }
+]
+
+tasks.forEach(task => runTask(task));
