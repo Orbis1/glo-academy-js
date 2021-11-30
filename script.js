@@ -52,7 +52,7 @@ console.log(title);
 const getServicePercentPrices = () => {
     return Math.ceil(fullPrice - fullPrice * (rollback / 100))
 }
-const servicePercentPrice = getServicePercentPrices;
+const servicePercentPrice = getServicePercentPrices();
 console.log("🚀 ~ servicePercentPrice", servicePercentPrice);
 
 const showTypeOf = (v) => console.log(v, typeof v);
@@ -64,8 +64,8 @@ showTypeOf(adaptive);
 console.log(screens.length);
 
 // - вывод строки с типами экранов для разработки screens
-console.log(`“Стоимость верстки экранов ${screenPrice} рублей/ долларов/гривен/юани” 
-и “Стоимость разработки сайта ${fullPrice} рублей/ долларов/гривен/юани”`);
+console.log(`“Стоимость верстки экранов ${screenPrice} рублей” 
+и “Стоимость разработки сайта ${fullPrice} рублей”`);
 
 // - сообщение о скидке пользователю (вызовы функции getRollbackMessage)
 console.log(getRollbackMessage(fullPrice));
