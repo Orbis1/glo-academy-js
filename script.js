@@ -1,20 +1,40 @@
-// const title = prompt("Как называется ваш проект?");
-let title = " КаЛьКулятор Верстки";
-// const screens = prompt("Какие типы экранов нужно разработать?", "Простые, Сложные, Интерактивные");
-const screens = "Простые, Сложные, Интерактивные";
-// const screenPrice = Number(prompt("Сколько будет стоить данная работа", 12000));
-const screenPrice = 12000;
-const rollback = 49;
-// const adaptive = confirm("“Нужен ли адаптив на сайте?”");
-const adaptive = true;
-// const serviceName1 = prompt("Какой дополнительный тип услуги нужен?");
-const serviceName1 = "serviceName1";
-// const servicePrice1 = Number(prompt("Сколько это будет стоить?"));
-const servicePrice1 = 100;
-// const serviceName2 = prompt("Какой дополнительный тип услуги нужен?");
-const serviceName2 = "serviceName2";
-// const servicePrice2 = Number(prompt("Сколько это будет стоить?"));
-const servicePrice2 = 50;
+let title;
+let screens;
+let screenPrice;
+const rollback = 50;
+let adaptive;
+let serviceName1;
+let serviceName2;
+let allServicePrices;
+let fullPrice;
+let servicePercentPrice;
+
+const isNumber = function (num) {
+    return isFinite(num) && typeof num === "number";
+};
+
+const toNumber = str => {
+    if (str === null) return;
+    let value = str.replaceAll(" ", "");
+    if (typeof value !== "number") value = Number(value);
+    if (isFinite(value)) return value;
+    console.log(`Can't convert "${str}"`);
+};
+
+const promTrim = function (msg, arg) {
+    return prompt(msg.trim(), arg);
+};
+
+const asking = function () {
+    title = promTrim("Как называется ваш проект?", " КаЛьКулятор Верстки");
+    screens = promTrim("Какие типы экранов нужно разработать?", "Простые, Сложные, Интерактивные");
+
+    do {
+        screenPrice = toNumber(promTrim("Сколько будет стоить данная работа"));
+    } while (!isNumber(screenPrice));
+
+    adaptive = confirm("“Нужен ли адаптив на сайте?”");
+};
 
 const getRollbackMessage = price => {
     switch (true) {
@@ -29,46 +49,59 @@ const getRollbackMessage = price => {
     }
 };
 
-// 1) Объявить функцию getAllServicePrices. Функция возвращает сумму всех дополнительных услуг. Результат сохраняем в переменную allServicePrices. Тип - function expression
-const getAllServicePrices = () => servicePrice1 + servicePrice2;
-const allServicePrices = getAllServicePrices();
+const getAllServicePrices = function () {
+    let sum = 0;
+    for (let i = 0; i < 2; i++) {
 
-// 2) Объявить функцию getFullPrice. Функция возвращает сумму стоимости верстки и стоимости дополнительных услуг (screenPrice + allServicePrices). Результат сохраняем в переменную fullPrice. Тип - function declaration
-const fullPrice = getFullPrice();
-function getFullPrice() {
-    return screenPrice + allServicePrices;
-}
+        let answer;
 
-// 3) Объявить функцию getTitle. Функция возвращает title меняя его таким образом: первый символ с большой буквы, остальные с маленькой". Учесть вариант что строка может начинаться с пустых символов. " КаЛьКулятор Верстки"
+        if (i === 0) {
+            serviceName1 = promTrim("Какой дополнительный тип услуги нужен?", "serviceName" + i);
+        } else if (i === 1) {
+            serviceName2 = promTrim("Какой дополнительный тип услуги нужен?", "serviceName" + i);
+        }
+
+        do {
+            answer = toNumber(promTrim("Сколько это будет стоить?", 1000))
+        } while (!isNumber(answer))
+        
+        sum += answer;
+    }
+    return sum;
+};
+
 const getTitle = () => {
     const str = title.toLowerCase().trim();
     return str[0].toUpperCase() + str.slice(1);
 };
-title = getTitle();
-console.log(title);
 
-// 4) Объявить функцию getServicePercentPrices. Функция возвращает итоговую стоимость за вычетом процента отката. Результат сохраняем в переменную servicePercentPrice (итоговая стоимость минус сумма отката)
-// - стоимость за вычетом процента отката посреднику (вызовы функции getServicePercentPrices)
-const getServicePercentPrices = () => {
-    return Math.ceil(fullPrice - fullPrice * (rollback / 100))
+function getFullPrice() {
+    return screenPrice + allServicePrices;
 }
-const servicePercentPrice = getServicePercentPrices();
-console.log("🚀 ~ servicePercentPrice", servicePercentPrice);
 
-const showTypeOf = (v) => console.log(v, typeof v);
+const getServicePercentPrices = () => {
+    return Math.ceil(fullPrice - fullPrice * (rollback / 100));
+};
 
-// - вызовы функции showTypeOf
+const showTypeOf = v => console.log(v, typeof v);
+
+asking();
+allServicePrices = getAllServicePrices();
+fullPrice = getFullPrice();
+title = getTitle();
+servicePercentPrice = getServicePercentPrices();
+
 showTypeOf(title);
 showTypeOf(fullPrice);
 showTypeOf(adaptive);
 console.log(screens.length);
 
 // - вывод строки с типами экранов для разработки screens
-console.log(`“Стоимость верстки экранов ${screenPrice} рублей” 
-и “Стоимость разработки сайта ${fullPrice} рублей”`);
+console.log(`“Стоимость верстки экранов ${screenPrice} рублей” и “Стоимость разработки сайта ${fullPrice} рублей”`);
 
 // - сообщение о скидке пользователю (вызовы функции getRollbackMessage)
 console.log(getRollbackMessage(fullPrice));
 
 // 5) Вывести в консоль строку из переменной screens в виде массива
 console.log(screens.toLowerCase().split(", "));
+console.log(servicePercentPrice);
