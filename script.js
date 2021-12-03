@@ -107,10 +107,18 @@ const AppData = {
     AppData.title = AppData.getTitle();
     AppData.fullPrice = AppData.getFullPrice();
     AppData.servicePercentPrice = AppData.getServicePercentPrices();
+    AppData.logger();
   },
+
+  logger() {
+    for (const key in AppData) {
+      if (typeof AppData[key] !== 'function') {
+        console.log(`${key}: ${AppData[key]}`);
+      }
+    }
+  }
 };
 
 AppData.start();
 
-console.log(AppData.fullPrice);
-console.log(AppData.servicePercentPrice);
+
